@@ -31,9 +31,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1220443709141460812}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -13.23, y: 1.5, z: 0}
-  m_LocalScale: {x: 2.5468, y: 2.5468, z: 2.5468}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1763382919995341758}
@@ -192,7 +192,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!114 &2157768661497153403
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -205,9 +205,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e28f12d773eb35444bfbf57a61746337, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  walkSpeed: 8
-  runSpeed: 14
-  jumpForce: 3
+  walkSpeed: 5
+  runSpeed: 8
+  jumpForce: 1.25
   runJumpMultiplier: 1.25
   groundCheck: {fileID: 1763382919995341758}
   checkRadius: 0.2
@@ -217,9 +217,17 @@ MonoBehaviour:
   jumpGravityMultiplier: 2.2
   coyoteTime: 0.17
   maxJumpCount: 1
-  jumpSound: {fileID: 0}
+  jumpSound: {fileID: 8300000, guid: 83829ff414f47a048b5387e4ab33571c, type: 3}
   jumpSoundVolume: 0.7
-  dashSpeed: 20
+  dashSound: {fileID: 8300000, guid: 88b1cbe3caa3fee4b8b103b5edd7aba9, type: 3}
+  dashSoundVolume: 0.7
+  landSound: {fileID: 8300000, guid: 023ea3ddeaa8dd146b7633a0800e5a0e, type: 3}
+  landSoundVolume: 0.5
+  walkSound: {fileID: 8300000, guid: 60f9efe3d97bc8f47bea1af7f7093d41, type: 3}
+  walkSoundVolume: 0.5
+  runSound: {fileID: 8300000, guid: f11db4559b3ffff45b62e9327fc5535d, type: 3}
+  runSoundVolume: 0.5
+  dashSpeed: 10
   dashDuration: 0.2
   dashCooldown: 0.7
   maxHealth: 3
@@ -239,6 +247,24 @@ MonoBehaviour:
   maxHearts: 3
   currentHearts: 0
   invulnDuration: 1
+  OnHealthChanged:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: HealthUI, Assembly-CSharp
+        m_MethodName: UpdateHearts
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 3
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  deathAnimationTime: 1.2
+  deathSound: {fileID: 8300000, guid: e58d8bd078f188a4ba314e933b98528b, type: 3}
+  hurtSound: {fileID: 8300000, guid: 7c47b20bb9874304a809dc5580d403ba, type: 3}
 --- !u!114 &2881947521486642779
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -254,6 +280,9 @@ MonoBehaviour:
   projectilePrefab: {fileID: 3484479772389395154, guid: b68463494ddb0954fa552332ab5e12da, type: 3}
   firePoint: {fileID: 7843772441197541012}
   fireRate: 0.5
+  isAutomaticWeapon: 0
+  attackSound: {fileID: 8300000, guid: 323e15cfe809e114ab92c9f4b25e8bc2, type: 3}
+  sfxSource: {fileID: 0}
 --- !u!1 &6568679413460004998
 GameObject:
   m_ObjectHideFlags: 0
@@ -279,7 +308,7 @@ Transform:
   m_GameObject: {fileID: 6568679413460004998}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.009999576, y: -0.332, z: 0}
+  m_LocalPosition: {x: 0.009999576, y: -0.283, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -310,7 +339,7 @@ Transform:
   m_GameObject: {fileID: 6592804005979038713}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.52, y: -0.12, z: 0}
+  m_LocalPosition: {x: 0.443, y: -0.181, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

@@ -93,3 +93,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameUIManager
   pauseMenuPanel: {fileID: 0}
   winScreenPanel: {fileID: 0}
+  gameOverPanel: {fileID: 0}

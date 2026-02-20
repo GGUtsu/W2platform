@@ -28,7 +28,20 @@ public class PlayerController : MonoBehaviour
     [Header("Sound")]
     public AudioClip jumpSound;
     [Range(0f, 1f)] public float jumpSoundVolume = 0.7f;
+    // Removed deathSound and shootSound
+    public AudioClip dashSound;
+    [Range(0f, 1f)] public float dashSoundVolume = 0.7f;
+    public AudioClip landSound;
+    [Range(0f, 1f)] public float landSoundVolume = 0.5f;
+    // Removed shootSound
+    // --- ADD walk & run sound ---
+    public AudioClip walkSound;
+    [Range(0f, 1f)] public float walkSoundVolume = 0.5f;
+    public AudioClip runSound;
+    [Range(0f, 1f)] public float runSoundVolume = 0.5f;
+
     private AudioSource audioSource;
+    private AudioSource footstepSource; // เพิ่มใหม่สำหรับเสียงเดิน/วิ่ง
 
     [Header("Dash Settings")]
     public float dashSpeed = 20f;
@@ -54,6 +67,15 @@ public class PlayerController : MonoBehaviour
     private Animator animator;
     private bool isCurrentlyRunning = false;
 
+    // --- ลงพื้นดิน ---
+    private bool wasGroundedLastFrame = false;
+
+    // สำหรับ footstep
+    private bool isPlayingFootstep = false;
+    private float footstepTimer = 0f;
+    private float walkStepInterval = 0.4f;
+    private float runStepInterval = 0.25f;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -70,6 +92,11 @@ public class PlayerController : MonoBehaviour
 
         // Initialize health
         currentHealth = maxHealth;
+
+        // Setup footstep audio source
+        footstepSource = gameObject.AddComponent<AudioSource>();
+        footstepSource.playOnAwake = false;
+        footstepSource.loop = false;
     }
 
     void Update()
@@ -77,10 +104,19 @@ public class PlayerController : MonoBehaviour
         if (!canMove)
         {
             SetIdleAnimation();
+            StopFootstepSound();
             return;
         }
 
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, checkRadius, groundLayer);
+
+        // --- ตรวจจับเสียงตอนลงพื้น ---
+        if (isGrounded && !wasGroundedLastFrame)
+        {
+            if (landSound != null && audioSource != null)
+                audioSource.PlayOneShot(landSound, landSoundVolume);
+        }
+        wasGroundedLastFrame = isGrounded;
 
         if (isGrounded)
         {
@@ -99,6 +135,7 @@ public class PlayerController : MonoBehaviour
 
         if (isDashing) {
             UpdateAnimationState();
+            StopFootstepSound();
             return;
         }
 
@@ -144,6 +181,9 @@ public class PlayerController : MonoBehaviour
             Flip();
 
         UpdateAnimationState();
+
+        // --- Footstep Sound Logic ---
+        HandleFootstepSound();
 
         // เพิ่มแรงถ่วง/ความลื่นของกระโดด รองรับโลกคว่ำ
         if (rb != null && !isGrounded)
@@ -222,6 +262,10 @@ public class PlayerController : MonoBehaviour
         rb.gravityScale = 0;
         float direction = facingRight ? 1f : -1f;
 
+        // ---- เสียง Dash -----
+        if (dashSound != null && audioSource != null)
+            audioSource.PlayOneShot(dashSound, dashSoundVolume);
+
         if (animator != null)
             animator.SetBool("IsDashing", true);
 
@@ -256,6 +300,7 @@ public class PlayerController : MonoBehaviour
         currentHealth -= damage;
         if (currentHealth <= 0)
         {
+            // ลบเสียงตายออก
             // ตายทันทีและไม่ให้เกิดใหม่ (ลบ GameObject นี้ออก)
             Destroy(this.gameObject);
         }
@@ -275,5 +320,41 @@ public class PlayerController : MonoBehaviour
 
         // Reset Y velocity to avoid overshooting/falling through ground
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
+    }
+
+    // ---- เสียงเดิน/วิ่ง ----
+    void HandleFootstepSound()
+    {
+        bool shouldPlayStep = isGrounded && Mathf.Abs(moveInput) > 0.1f && !isDashing && canMove;
+
+        if (!shouldPlayStep)
+        {
+            StopFootstepSound();
+            return;
+        }
+
+        float interval = isCurrentlyRunning ? runStepInterval : walkStepInterval;
+        footstepTimer += Time.deltaTime;
+
+        if (footstepTimer >= interval)
+        {
+            footstepTimer = 0f;
+
+            if (footstepSource != null)
+            {
+                AudioClip clip = isCurrentlyRunning ? runSound : walkSound;
+                float vol = isCurrentlyRunning ? runSoundVolume : walkSoundVolume;
+                if (clip != null)
+                {
+                    footstepSource.PlayOneShot(clip, vol);
+                }
+            }
+        }
+    }
+
+    void StopFootstepSound()
+    {
+        footstepTimer = 0f;
+        // ไม่จำเป็นต้อง stop เพราะเป็น one-shot
     }
 }

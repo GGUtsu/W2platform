@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 6496272792072075641}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.52, y: -0.26, z: 0}
+  m_LocalPosition: {x: 0.52, y: 0.04, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -45,6 +45,7 @@ GameObject:
   - component: {fileID: 7063439781111827449}
   - component: {fileID: 4476712465698209986}
   - component: {fileID: 458880275496620380}
+  - component: {fileID: 1107998642296698286}
   m_Layer: 0
   m_Name: Enermy
   m_TagString: Untagged
@@ -115,7 +116,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  m_Sprite: {fileID: 2393064668503620129, guid: f1c4f6e0cde898e40aae7f48db7fa27e, type: 3}
   m_Color: {r: 0.745283, g: 0.017577427, b: 0.017577427, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -138,11 +139,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af542d3dae8bd284b91ce7540a68a72f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAI
-  moveSpeed: 2
+  moveSpeed: 1
   leftPoint: {fileID: 0}
   rightPoint: {fileID: 0}
-  chaseRange: 5
-  chaseSpeed: 4
+  chaseRange: 3
+  chaseSpeed: 2
   enemyProjectilePrefab: {fileID: 3484479772389395154, guid: 1a7fe259496e6ee4fbc85ee24298be96, type: 3}
   firePoint: {fileID: 8358385787552476804}
   attackRange: 8
@@ -199,7 +200,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
+    oldSize: {x: 1.4, y: 0.81}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -234,3 +235,25 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 2
+--- !u!95 &1107998642296698286
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8299217954124219198}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 4a940352cdf057b4c9bc90348874fe25, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

@@ -8,6 +8,8 @@ public class StarCollectible : MonoBehaviour
 
     [Header("Effects")]
     public AudioClip collectSound; // เสียงตอนเก็บดาว
+    [Tooltip("ช่องเสียงเล่นเฉพาะเอฟเฟกต์เก็บดาว (Optional). หากไม่ใส่จะใช้ PlayClipAtPoint")]
+    public AudioSource sfxSource;  // เพิ่มช่องให้ระบุ AudioSource สำหรับเล่นเสียงเอฟเฟกต์
 
     void Start()
     {
@@ -28,10 +30,17 @@ public class StarCollectible : MonoBehaviour
                 targetDoor.AddStar(); // ส่งสัญญาณไปบอกประตูว่าเก็บดาวได้ 1 ดวง
             }
 
-            // เล่นเสียงเก็บดาว (สร้าง GameObject ชั่วคราวเพื่อเล่นเสียง เพราะดาวตัวนี้กำลังจะโดนลบ)
+            // เล่นเสียงเก็บดาว รองรับทั้งผ่าน AudioSource กับ PlayClipAtPoint
             if (collectSound != null)
             {
-                AudioSource.PlayClipAtPoint(collectSound, transform.position);
+                if (sfxSource != null)
+                {
+                    sfxSource.PlayOneShot(collectSound);
+                }
+                else
+                {
+                    AudioSource.PlayClipAtPoint(collectSound, transform.position);
+                }
             }
 
             // ทำลายดวงดาวทิ้ง

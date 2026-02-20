@@ -20,6 +20,16 @@ public class Health : MonoBehaviour
     [Tooltip("ระยะเวลาแอนิเมชันตาย ก่อนที่หน้า Game Over จะเด้งขึ้นมา")]
     public float deathAnimationTime = 1.2f;
 
+    [Header("Player Death Sound")]
+    [Tooltip("เสียง effect ที่จะเล่นตอนตัวละครตาย")]
+    public AudioClip deathSound;
+
+    [Header("Player Hurt Sound")]
+    [Tooltip("เสียง effect ที่จะเล่นตอนเลือดลด")]
+    public AudioClip hurtSound;
+
+    private AudioSource audioSource;
+
     private Animator animator; // ตัวแปรสำหรับคุมแอนิเมชัน
     private PlayerController playerController; // ตัวแปรสำหรับสั่งหยุดเดินตอนตาย
 
@@ -31,6 +41,13 @@ public class Health : MonoBehaviour
         // ดึง Component Animator และ PlayerController มาเตรียมไว้
         animator = GetComponent<Animator>();
         playerController = GetComponent<PlayerController>();
+
+        // เตรียม AudioSource
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null && (deathSound != null || hurtSound != null))
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
     }
 
     void Update()
@@ -54,8 +71,14 @@ public class Health : MonoBehaviour
 
         OnHealthChanged?.Invoke(currentHearts);
 
+        // เล่นเสียงเมื่อตัวละครโดนโจมตีและยังไม่ตาย
         if (currentHearts > 0)
         {
+            if (hurtSound != null && audioSource != null)
+            {
+                audioSource.PlayOneShot(hurtSound);
+            }
+
             // ยังไม่ตาย: สั่งเล่นแอนิเมชัน "เจ็บ" แล้ววาร์ปกลับจุดเกิด
             if (animator != null) animator.SetTrigger("Hurt");
 
@@ -66,6 +89,12 @@ public class Health : MonoBehaviour
         {
             // ตายแล้ว: สั่งเล่นแอนิเมชัน "ตาย"
             if (animator != null) animator.SetTrigger("Die");
+
+            // เล่นเสียงเมื่อตาย
+            if (deathSound != null && audioSource != null)
+            {
+                audioSource.PlayOneShot(deathSound);
+            }
 
             // สั่งให้ตัวละครหยุดขยับ ล็อกการบังคับทุกอย่าง
             if (playerController != null) playerController.SetCanMove(false);

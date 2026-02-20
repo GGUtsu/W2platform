@@ -13,6 +13,12 @@ public class PlayerCombat : MonoBehaviour
     [Tooltip("ติ๊กถูกถ้าอยากให้กดเมาส์ค้างแล้วปืนยิงรัวอัตโนมัติ")]
     public bool isAutomaticWeapon = false;
 
+    [Header("Audio")]
+    [Tooltip("เสียงตอนโจมตี/ยิงกระสุน")]
+    public AudioClip attackSound;
+    [Tooltip("AudioSource สำหรับเล่นเสียงโจมตี (Optional)")]
+    public AudioSource sfxSource;
+
     private PlayerController playerController;
 
     void Start()
@@ -43,6 +49,19 @@ public class PlayerCombat : MonoBehaviour
             // เช็คทิศทางจาก PlayerController
             Vector2 shootDir = playerController.facingRight ? Vector2.right : Vector2.left;
             proj.Setup(shootDir);
+        }
+
+        // เล่นเสียงโจมตีถ้ามีคลิปเสียง
+        if (attackSound != null)
+        {
+            if (sfxSource != null)
+            {
+                sfxSource.PlayOneShot(attackSound);
+            }
+            else
+            {
+                AudioSource.PlayClipAtPoint(attackSound, transform.position);
+            }
         }
     }
 }

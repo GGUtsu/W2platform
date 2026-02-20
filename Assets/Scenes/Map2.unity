@@ -537,6 +537,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: RestartFromCheckpoint
       objectReference: {fileID: 0}
+    - target: {fileID: 5325181830320547231, guid: 25a07986ed6f8a94c8fe02952fe012e1, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5448101293555336262, guid: 25a07986ed6f8a94c8fe02952fe012e1, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 

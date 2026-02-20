@@ -41,7 +41,7 @@ public class StarDoor : MonoBehaviour
         if (starText != null)
         {
             // เปลี่ยนข้อความเป็น "STAR : ปัจจุบัน / เป้าหมาย" (เช่น "STAR : 1 / 3")
-            starText.text = "STAR : " + currentStars.ToString() + " / " + requiredStars.ToString();
+            starText.text =   currentStars.ToString() + " / " + requiredStars.ToString();
         }
         else
         {
